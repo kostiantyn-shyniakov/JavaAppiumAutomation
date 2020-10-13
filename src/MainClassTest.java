@@ -1,5 +1,4 @@
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 
 public class MainClassTest {
@@ -16,5 +15,11 @@ public class MainClassTest {
     public void testGetClassNumber()
     {
         Assert.assertTrue("ClassNumber is less or equal 45", mc.getClassNumber()>45);
+    }
+
+    @Test
+    public void testGetClassString()
+    {
+        Assert.assertTrue("ClassSting doesn't contain 'hello' word ", mc.getClassString().toLowerCase().contains("hello"));
     }
 }
