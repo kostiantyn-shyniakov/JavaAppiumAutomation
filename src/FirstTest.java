@@ -38,10 +38,32 @@ public class FirstTest {
     @Test
     public void checkTextInSearchContainer()
     {
-        TouchAction touchAction = new TouchAction(driver);
-        touchAction.tap(117, 1710).perform();       //tap 'Skip'
+        clickSkip();
         By search_container = By.xpath("//*[@resource-id='org.wikipedia:id/search_container']//*[@class='android.widget.TextView']");
         assertElementHasText(search_container,"Search Wikipedia","Expected text is absent in search container");
+    }
+
+    @Test
+    public void checkSearchAndCancel()
+    {
+        clickSkip();
+        waitForElementAndClick(By.xpath("//*[@text='Search Wikipedia']"));
+        waitForElementAndSendKeys(By.xpath("//*[@text='Search Wikipedia']"),"Automation");
+        Assert.assertTrue(waitForElementPresence(By.id("org.wikipedia:id/page_list_item_title"), "Search result is absent").isDisplayed());
+        waitForElementAndClick(By.id("org.wikipedia:id/search_close_btn"));
+        Assert.assertTrue(waitForElementNotPresent(By.id("org.wikipedia:id/page_list_item_title"), "Search result is present",5));
+    }
+
+    private void waitForElementAndSendKeys(By by, String text)
+    {
+        WebElement element = waitForElementPresence(by,"Element is not found");
+        element.sendKeys(text);
+    }
+
+    private void waitForElementAndClick(By by)
+    {
+        WebElement element = waitForElementPresence(by,"Element is not found");
+        element.click();
     }
 
     private WebElement waitForElementPresence(By by, String error_massage, long timeoutInSeconds)
@@ -62,8 +84,22 @@ public class FirstTest {
         );
     }
 
+    private boolean waitForElementNotPresent(By by, String error_massage, long timeoutInSeconds)
+    {
+        WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
+        wait.withMessage(error_massage + "\n");
+        return wait.until(
+                ExpectedConditions.invisibilityOfElementLocated(by)
+        );
+    }
+
     private void assertElementHasText(By by, String expected_text, String error_massage){
         WebElement element = waitForElementPresence(by, "Cannot find TextView element in search container");
         Assert.assertEquals(error_massage,element.getText(),expected_text);
+    }
+
+    private void clickSkip(){
+        TouchAction touchAction = new TouchAction(driver);
+        touchAction.tap(117, 1710).perform();
     }
 }
