@@ -64,6 +64,19 @@ public class FirstTest {
         }
     }
 
+    @Test
+    public void assertTitlePresent()
+    {
+        sendKeysToSearchToolBar("Java");
+        waitForElementAndClick(By.id("org.wikipedia:id/page_list_item_title"));
+        Assert.assertTrue("Title is not found", isElementPresent(By.xpath("//*[@resource-id='pcs-edit-section-title-description']/preceding-sibling::android.view.View")));
+    }
+
+    private boolean isElementPresent(By by)
+    {
+        return driver.findElements(by).size()>0;
+    }
+
     private void sendKeysToSearchToolBar(String text)
     {
         clickSkip();
