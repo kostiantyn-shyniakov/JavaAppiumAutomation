@@ -30,6 +30,7 @@ public class FirstTest {
         capabilities.setCapability("app","C:\\Users\\kshyniakov\\Documents\\GitHub\\JavaAppiumAutomation\\apks\\org.wikipedia.apk");
 
         driver = new AndroidDriver(new URL("http://127.0.0.1:4723/wd/hub"), capabilities);
+        clickSkip();
     }
     @After
     public void tearDown()
@@ -39,7 +40,6 @@ public class FirstTest {
     @Test
     public void checkTextInSearchContainer()
     {
-        clickSkip();
         By search_container = By.xpath("//*[@resource-id='org.wikipedia:id/search_container']//*[@class='android.widget.TextView']");
         assertElementHasText(search_container,"Search Wikipedia","Expected text is absent in search container");
     }
@@ -67,9 +67,53 @@ public class FirstTest {
     @Test
     public void assertTitlePresent()
     {
-        sendKeysToSearchToolBar("Java");
-        waitForElementAndClick(By.id("org.wikipedia:id/page_list_item_title"));
+        openArticle("Java");
         Assert.assertTrue("Title is not found", isElementPresent(By.xpath("//*[@resource-id='pcs-edit-section-title-description']/preceding-sibling::android.view.View")));
+    }
+
+    @Test
+    public void checkPresenceOfArticleAfterDeletingAnotherOne()
+    {
+        String title1 = saveArticelAndGoHome("Java");
+        String title2 = saveArticelAndGoHome("Automation");
+        goToSavedList();
+        deleteItemFromSavedListAndGoHome(title2);
+        goToSavedList();
+        Assert.assertTrue("Searching title is absent", checkPresenceOfTitleInSavedList(title1));
+    }
+
+    private boolean checkPresenceOfTitleInSavedList(String title) {
+        return waitForElementPresence(By.xpath("//*[@text='"+title+"']"),"WebElement with specified title is absent").isDisplayed();
+    }
+
+    private void goToSavedList() {
+        waitForElementAndClick(By.xpath("//*[@content-desc='My lists']"));
+        waitForElementAndClick(By.xpath("//*[@text='Saved']"));
+    }
+
+    private void deleteItemFromSavedListAndGoHome(String title) {
+        waitForElementAndClick(By.xpath("//*[@text='"+title+"']"));
+        waitForElementAndClick(By.xpath("//*[@text='Save']"));
+        waitForElementAndClick(By.xpath("//*[@text='Remove from Saved']"));
+        goHome();
+    }
+
+    private String saveArticelAndGoHome(String text) {
+        openArticle(text);
+        waitForElementAndClick(By.xpath("//*[@resource-id='org.wikipedia:id/article_menu_bookmark']"));
+        String title=waitForElementPresence(By.xpath("//*[@resource-id='pcs-edit-section-title-description']/preceding-sibling::android.view.View"),"Can't find title").getText();
+        goHome();
+        return title;
+    }
+
+    private void goHome() {
+        waitForElementAndClick(By.xpath("//*[@resource-id='org.wikipedia:id/page_toolbar_button_show_overflow_menu']"));
+        waitForElementAndClick(By.xpath("//*[@resource-id='org.wikipedia:id/overflow_feed']"));
+    }
+
+    private void openArticle(String text) {
+        sendKeysToSearchToolBar(text);
+        waitForElementAndClick(By.id("org.wikipedia:id/page_list_item_title"));
     }
 
     private boolean isElementPresent(By by)
@@ -79,20 +123,20 @@ public class FirstTest {
 
     private void sendKeysToSearchToolBar(String text)
     {
-        clickSkip();
         waitForElementAndClick(By.xpath("//*[@text='Search Wikipedia']"));
         waitForElementAndSendKeys(By.xpath("//*[@text='Search Wikipedia']"),text);
     }
 
     private void waitForElementAndSendKeys(By by, String text)
     {
-        WebElement element = waitForElementPresence(by,"Element is not found");
+        WebElement element = waitForElementPresence(by,"Element for sending keys is not found");
+        element.clear();
         element.sendKeys(text);
     }
 
     private void waitForElementAndClick(By by)
     {
-        WebElement element = waitForElementPresence(by,"Element is not found");
+        WebElement element = waitForElementPresence(by,"Element for clicking is not found");
         element.click();
     }
 
