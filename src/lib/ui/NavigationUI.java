@@ -6,22 +6,22 @@ import org.openqa.selenium.By;
 public class NavigationUI extends MainPageObject {
 
     private static final String
-            OVERFLOW_MENU = "//*[@resource-id='org.wikipedia:id/page_toolbar_button_show_overflow_menu']",
-            HOME_MENU_OPTION = "//*[@resource-id='org.wikipedia:id/overflow_feed']",
-            MY_LISTS = "//*[@content-desc='My lists']",
-            SAVED_LIST = "//*[@text='Saved']";
+            OVERFLOW_MENU = "xpath://*[@resource-id='org.wikipedia:id/page_toolbar_button_show_overflow_menu']",
+            HOME_MENU_OPTION = "xpath://*[@resource-id='org.wikipedia:id/overflow_feed']",
+            MY_LISTS = "xpath://*[@content-desc='My lists']",
+            SAVED_LIST = "xpath://*[@text='Saved']";
 
     public NavigationUI(AppiumDriver driver){
         super(driver);
     }
 
     public void goHome() {
-        waitForElementAndClick(By.xpath(OVERFLOW_MENU));
-        waitForElementAndClick(By.xpath(HOME_MENU_OPTION));
+        waitForElementAndClick(OVERFLOW_MENU);
+        waitForElementAndClick(HOME_MENU_OPTION);
     }
 
     public void goToSavedList() {
-        waitForElementAndClick(By.xpath(MY_LISTS));
-        waitForElementAndClick(By.xpath(SAVED_LIST));
+        waitForElementAndClick(MY_LISTS);
+        waitForElementAndClick(SAVED_LIST);
     }
 }

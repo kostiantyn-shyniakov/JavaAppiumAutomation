@@ -1,7 +1,6 @@
 package lib.ui;
 
 import io.appium.java_client.AppiumDriver;
-import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -16,26 +15,28 @@ public class MainPageObject {
         this.driver=driver;
     }
 
-    public boolean isElementPresent(By by)
+    public boolean isElementPresent(String locator)
     {
+        By by = getLocatorByString(locator);
         return driver.findElements(by).size()>0;
     }
 
-    public void waitForElementAndSendKeys(By by, String text)
+    public void waitForElementAndSendKeys(String locator, String text)
     {
-        WebElement element = waitForElementPresence(by,"Element for sending keys is not found");
+        WebElement element = waitForElementPresence(locator,"Element for sending keys is not found");
         element.clear();
         element.sendKeys(text);
     }
 
-    public void waitForElementAndClick(By by)
+    public void waitForElementAndClick(String locator)
     {
-        WebElement element = waitForElementPresence(by,"Element for clicking is not found");
+        WebElement element = waitForElementPresence(locator,"Element for clicking is not found");
         element.click();
     }
 
-    private WebElement waitForElementPresence(By by, String error_massage, long timeoutInSeconds)
+    private WebElement waitForElementPresence(String locator, String error_massage, long timeoutInSeconds)
     {
+        By by = getLocatorByString(locator);
         WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
         wait.withMessage(error_massage + "\n");
         return wait.until(
@@ -43,17 +44,18 @@ public class MainPageObject {
         );
     }
 
-    public WebElement waitForElementPresence(By by, String error_massage)
+    public WebElement waitForElementPresence(String locator, String error_massage)
     {
         return waitForElementPresence(
-                by,
+                locator,
                 error_massage,
                 5
         );
     }
 
-    public boolean waitForElementNotPresent(By by, String error_massage, long timeoutInSeconds)
+    public boolean waitForElementNotPresent(String locator, String error_massage, long timeoutInSeconds)
     {
+        By by = getLocatorByString(locator);
         WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
         wait.withMessage(error_massage + "\n");
         return wait.until(
@@ -61,12 +63,7 @@ public class MainPageObject {
         );
     }
 
-    public void assertElementHasText(By by, String expected_text, String error_massage){
-        WebElement element = waitForElementPresence(by, "Cannot find TextView element in search container");
-        Assert.assertEquals(error_massage,element.getText(),expected_text);
-    }
-
-    private By getLocatorString(String locator_with_type){
+    protected By getLocatorByString(String locator_with_type){
         String[] exploaded_locator = locator_with_type.split(Pattern.quote(":"),2);
         String by_type = exploaded_locator[0];
         String locator = exploaded_locator[1];
