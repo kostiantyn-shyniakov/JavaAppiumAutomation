@@ -1,20 +1,19 @@
 package lib.ui;
 
 import io.appium.java_client.AppiumDriver;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.List;
 
-public class SearchPageObject extends MainPageObject{
+abstract public class SearchPageObject extends MainPageObject{
 
-    private static final String
-    SEARCH_INIT_ELEMENT = "xpath://*[@text='Search Wikipedia']",
-    SEARCH_LIST_ITEM = "id:org.wikipedia:id/page_list_item_title",
-    CLOSE_BTN = "id:org.wikipedia:id/search_close_btn",
-    ARTICLE_TITLE = "xpath://*[@resource-id='pcs-edit-section-title-description']/preceding-sibling::android.view.View";
+    protected static String
+    SEARCH_INIT_ELEMENT,
+    SEARCH_LIST_ITEM,
+    CLOSE_BTN,
+    ARTICLE_TITLE;
 
     public SearchPageObject(AppiumDriver driver){
         super(driver);

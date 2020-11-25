@@ -1,5 +1,6 @@
 import lib.CoreTestCase;
 import lib.ui.*;
+import lib.ui.factories.SearchPageObjectFactory;
 
 public class FirstTest extends CoreTestCase {
 
@@ -12,7 +13,7 @@ public class FirstTest extends CoreTestCase {
     protected void setUp() throws Exception {
         super.setUp();
         MainPageProject = new MainPageObject(driver);
-        SearchPageObject = new SearchPageObject(driver);
+        SearchPageObject = SearchPageObjectFactory.get(driver);
         ArticlePageObject = new ArticlePageObject(driver);
         NavigationUI = new NavigationUI(driver);
         MyListsPageObject = new MyListsPageObject(driver);
