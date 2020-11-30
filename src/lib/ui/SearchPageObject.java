@@ -2,6 +2,7 @@ package lib.ui;
 
 import io.appium.java_client.AppiumDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -15,7 +16,7 @@ abstract public class SearchPageObject extends MainPageObject{
     CLOSE_BTN,
     ARTICLE_TITLE;
 
-    public SearchPageObject(AppiumDriver driver){
+    public SearchPageObject(RemoteWebDriver driver){
         super(driver);
     }
 
@@ -37,7 +38,7 @@ abstract public class SearchPageObject extends MainPageObject{
         waitForElementAndClick(CLOSE_BTN);
     }
 
-    public boolean checkSearchResultContainsWord(String text, AppiumDriver driver) {
+    public boolean checkSearchResultContainsWord(String text, RemoteWebDriver driver) {
         WebDriverWait wait = new WebDriverWait(driver, 5);
         List<WebElement> list = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(getLocatorByString(SEARCH_LIST_ITEM)));
         for(WebElement element:list){

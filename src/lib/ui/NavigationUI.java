@@ -2,6 +2,7 @@ package lib.ui;
 
 import io.appium.java_client.AppiumDriver;
 import org.openqa.selenium.By;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
 public class NavigationUI extends MainPageObject {
 
@@ -11,7 +12,7 @@ public class NavigationUI extends MainPageObject {
             MY_LISTS = "xpath://*[@content-desc='My lists']",
             SAVED_LIST = "xpath://*[@text='Saved']";
 
-    public NavigationUI(AppiumDriver driver){
+    public NavigationUI(RemoteWebDriver driver){
         super(driver);
     }
 

@@ -1,17 +1,17 @@
 package lib.ui;
 
-import io.appium.java_client.AppiumDriver;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.regex.Pattern;
 
 public class MainPageObject {
-    protected AppiumDriver driver;
+    protected RemoteWebDriver driver;
 
-    public MainPageObject(AppiumDriver driver){
+    public MainPageObject(RemoteWebDriver driver){
         this.driver=driver;
     }
 
@@ -71,6 +71,8 @@ public class MainPageObject {
             return By.xpath(locator);
         } else if (by_type.equals("id")){
             return By.id(locator);
+        } else if (by_type.equals("css")){
+            return By.cssSelector(locator);
         } else {
             throw new IllegalArgumentException("Cannot get type of locator. Locator:" + locator_with_type);
         }

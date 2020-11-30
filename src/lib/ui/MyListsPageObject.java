@@ -1,6 +1,7 @@
 package lib.ui;
 
 import io.appium.java_client.AppiumDriver;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
 public class MyListsPageObject extends MainPageObject{
 
@@ -8,7 +9,7 @@ public class MyListsPageObject extends MainPageObject{
             SAVE_BTN = "xpath://*[@text='Save']",
             REMOVED_FROM_SAVED = "xpath://*[@text='Remove from Saved']";
 
-    public MyListsPageObject(AppiumDriver driver){
+    public MyListsPageObject(RemoteWebDriver driver){
         super(driver);
     }
 

@@ -3,7 +3,10 @@ package lib;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.ios.IOSDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.net.URL;
 
@@ -46,12 +49,24 @@ public class Platform {
         return platform.equals("android");
     }
 
-    public AppiumDriver getDriver() throws Exception{
+    public boolean isIOS(){
+        return platform.equals("iOS");
+    }
+
+    public boolean isMobileWeb(){
+        return platform.equals("mobile_web");
+    }
+
+    public RemoteWebDriver getDriver() throws Exception{
         URL URL = new URL(AppiumURL);
-        if(platform.equals("iOS")){
+        if(Platform.getInstance().isIOS()){
             return new IOSDriver(URL, getIOSDesiredCapabilities());
-        } else if (platform.equals("android")){
+        } else if (Platform.getInstance().isAndroid()){
             return new AndroidDriver(URL, getAndroidDesiredCapabilities());
+        } else if (Platform.getInstance().isMobileWeb()){
+            ChromeOptions chromeOptions = new ChromeOptions();
+            chromeOptions.addArguments("window-size=340,640");
+            return new ChromeDriver(chromeOptions);
         } else {
             throw new Exception("Cannot get run platform from env veriable");
         }
